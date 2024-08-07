@@ -1,17 +1,27 @@
 package com.example.projecttt.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-import java.io.Serializable;
-
+import jakarta.persistence.*;
+import lombok.*;
 @Entity
+@Setter
+@Getter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 
-public class Interaction  implements Serializable {
+public class Interaction {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private int idInteraction;
-    private boolean like ;
+    private boolean  InterType ;
+    @ManyToOne
+    @JoinColumn(name="idPublication")
+    private Publication InterPublications ;
+    @ManyToOne
+    @JoinColumn(name="utilisateur_id")
+    private Utilisateur InterUtilisateur;
+
+
+
 }

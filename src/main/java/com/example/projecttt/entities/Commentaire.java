@@ -1,19 +1,16 @@
 package com.example.projecttt.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Commentaire {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +18,9 @@ public class Commentaire {
     private  String contenu ;
     private Date dateComment ;
 
-    @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL)
-    private List<Commentaire> commentaires;
+    @ManyToOne
+    @JoinColumn(name = "idPublication")
+    private Publication publication;
 
     @ManyToOne
     @JoinColumn(name = "utilisateur_id")

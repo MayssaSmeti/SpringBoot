@@ -1,9 +1,9 @@
 package com.example.projecttt.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -14,8 +14,12 @@ import lombok.*;
 
 public class Chat {
     @Id
-    @GeneratedValue
-    private int Chatid;
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private Long idChat;
+    private boolean visibility;
+    @ManyToMany
+    @CollectionTable( name="utilisateur_id")
+    private List<Utilisateur> emetteur  ;
 
 
 }

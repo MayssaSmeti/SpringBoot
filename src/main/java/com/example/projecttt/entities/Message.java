@@ -1,10 +1,7 @@
 package com.example.projecttt.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -14,24 +11,20 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Message {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private int idMessage;
-    private String cropM ;
-    private Date date ;
-    private  boolean etat  ;
-
-
+    private Long   idMessage;
+    private  boolean etat;
+    private String contenu;
+    private Date dateEnvoi;
     @ManyToOne
-    @JoinColumn(name = "emetteur_id")
+    @JoinColumn(name = "utilisateur_id")
     private Utilisateur emetteur;
 
     @ManyToOne
-    @JoinColumn(name = "recepteur_id")
-    private Utilisateur recepteur;
-
-    private String contenu;
-    private LocalDateTime dateEnvoi;
+    @JoinColumn(name = "chat")
+    private Chat chat;
 
 }

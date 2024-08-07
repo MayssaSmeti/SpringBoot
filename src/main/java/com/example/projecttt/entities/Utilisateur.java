@@ -1,11 +1,11 @@
 package com.example.projecttt.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -13,41 +13,46 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
-
-public class Utilisateur {
+@ToString
+public class Utilisateur implements UserDetails {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private long utilisateur_id;
+    private Long utilisateur_id;
     private String nom;
     private String prenom;
+    @NonNull
+    @Column(unique = true)
     private String email;
+    private String adresse ;
     private String password;
-
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
     private int numero ;
     private boolean ban ;
+    @Lob
+    private  byte[] imagePath;
 
 
     @Enumerated (EnumType.STRING)
     private Grad grade;
 
-    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
-    private List<Publication> posts;
+    public Utilisateur(long utilisateur_id) {
+        this.utilisateur_id = utilisateur_id;
+    }
 
-    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
-    private List<Commentaire> commentaires;
 
-    @OneToMany(mappedBy = "emetteur", cascade = CascadeType.ALL)
-    private List<Message> messagesEnvoyes;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
 
-    @OneToMany(mappedBy = "recepteur", cascade = CascadeType.ALL)
-    private List<Message> messagesRecus;
+    @Override
+    public String getUsername() {
+        return "";
+    }
 
-    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
-    private List<Notification> notifications;
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
 
 
 }
