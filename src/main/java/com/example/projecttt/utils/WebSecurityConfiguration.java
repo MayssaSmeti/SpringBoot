@@ -1,6 +1,7 @@
 package com.example.projecttt.utils;
 
 import com.example.projecttt.filters.JwTRequestFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,7 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebSecurityConfiguration  implements WebMvcConfigurer {
 
     private final JwTRequestFilter jwtRequestFilter;
-
+@Autowired
     public WebSecurityConfiguration(JwTRequestFilter jwtRequestFilter) {
         this.jwtRequestFilter = jwtRequestFilter;
     }
@@ -53,19 +54,19 @@ public class WebSecurityConfiguration  implements WebMvcConfigurer {
         return  configuration.getAuthenticationManager();
     }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:4200")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*")
-                .allowCredentials(true);
-    }
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Configure static resource handling
-        registry.addResourceHandler("//uploads/**").addResourceLocations("file:/uploads/");
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**")
+//                .allowedOrigins("http://localhost:4200")
+//                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+//                .allowedHeaders("*")
+//                .allowCredentials(true);
+//    }
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        // Configure static resource handling
+//        registry.addResourceHandler("//uploads/**").addResourceLocations("file:/uploads/");
+//    }
 
 
 }

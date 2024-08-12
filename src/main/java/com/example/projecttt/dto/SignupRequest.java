@@ -21,6 +21,5 @@ public class SignupRequest {
     private String adresse ;
     @Enumerated(EnumType.STRING)
     private Grad grade;
-    @Lob
-    private byte[] photo;
+
 }

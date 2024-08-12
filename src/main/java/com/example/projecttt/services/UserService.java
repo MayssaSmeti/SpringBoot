@@ -53,6 +53,11 @@ public class UserService implements IUserService {
         return utilisateurRepo.findByEmail(email).orElse(null);
     }
 
+    @Override
+    public Utilisateur retrieveUserByIdUtilisateur(Long utilisateur_id) {
+        return utilisateurRepo.findByUtilisateurid(utilisateur_id);
+    }
+
     public Utilisateur getCurrentUser(UserDetails userDetails) {
 
         Utilisateur utilisateur = new Utilisateur();

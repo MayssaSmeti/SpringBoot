@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 @Service
@@ -24,12 +25,21 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public boolean createUser(SignupRequest signupRequest) throws IOException {
-        Utilisateur user = new Utilisateur();
-        BeanUtils.copyProperties(signupRequest,user);
-        String hashPassword = passwordEncoder.encode(signupRequest.getPassword());
-        user.setPassword(hashPassword);
-        Utilisateur createdUser = utilisateurRepo.save(user);
-        return true;
+    public boolean createUser(SignupRequest signupRequest,  MultipartFile pic) throws IOException {
+        try {
+            Utilisateur user = new Utilisateur();
+            BeanUtils.copyProperties(signupRequest, user);
+            String hashPassword = passwordEncoder.encode(signupRequest.getPassword());
+            user.setPassword(hashPassword);
+            if (!pic.isEmpty()) {
+                user.setImagePath(pic.getBytes());
+            }
+            Utilisateur createdUser = utilisateurRepo.save(user);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
+
 }

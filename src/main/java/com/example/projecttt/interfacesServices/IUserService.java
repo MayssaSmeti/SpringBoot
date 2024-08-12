@@ -13,6 +13,8 @@ public interface IUserService {
     public Utilisateur  ModifierUtilisateur(Utilisateur utilisateur);
     public void SupprimerUtilisateur(Long utilisateur_id);
     public Utilisateur retrieveUserByMail(String email);
+    public Utilisateur retrieveUserByIdUtilisateur(Long utilisateur_id);
+
     public void deleteCurrentUser(Principal connectedUser) ;
 
 

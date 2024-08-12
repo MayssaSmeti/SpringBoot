@@ -22,7 +22,12 @@ public class ChatService implements IChatService {
     public Chat retrieveChat(Long idChat) {
        return  chatRepository.findById(idChat).get();
     }
+    public Long findChatIdByExactUserIds(List<Long> userIds) {
+        Long idChat = chatRepository.findChatIdByExactUserIds(userIds, userIds.size());
 
+        System.out.println(idChat);
+        return idChat != null ? idChat : 0L;
+    }
     @Override
     public Chat addChat(Chat c) {
        c.setVisibility(false);

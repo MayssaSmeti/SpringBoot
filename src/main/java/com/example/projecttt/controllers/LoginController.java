@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.naming.AuthenticationException;
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 
 @RestController
 @RequestMapping("/login")
@@ -34,24 +34,34 @@ public class LoginController {
     @PostMapping
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest){
         System.out.printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),loginRequest.getPassword())
-        );
-        System.out.println("Authentication Successful");
-        UserDetails userDetails;
         try {
-            userDetails = loginService.loadUserByUsername(loginRequest.getEmail());
-            System.out.printf("user details loaded");
-        } catch (UsernameNotFoundException e) {
-            System.out.println("Username not found");
-            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        String jwt = jwtUtil.generateToken(userDetails.getUsername());
-        System.out.println("Token jwt generated");
-        return ResponseEntity.ok(new LoginResponse(jwt));
+            System.out.println("Attempting authentication");
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
+            );
+            System.out.println("Authentication Successful");
 
+            UserDetails userDetails;
+            try {
+                userDetails = loginService.loadUserByUsername(loginRequest.getEmail());
+                System.out.println("User details loaded");
+            } catch (UsernameNotFoundException e) {
+                System.out.println("Username not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
+            String jwt = jwtUtil.generateToken(userDetails.getUsername());
+            System.out.println("JWT token generated");
+
+            return ResponseEntity.ok(new LoginResponse(jwt));
+        } catch (Exception e) {
+            System.out.println("Authentication failed: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
-
-
 }
+
+
+
+

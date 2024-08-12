@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/signUp")
 public class SignUpControler {
@@ -31,35 +31,34 @@ public class SignUpControler {
         return user;
     }
 
-    @PostMapping(value="registration",consumes = "multipart/form-data")
+    @PostMapping(value="registration", consumes = "multipart/form-data")
     public ResponseEntity<String> signupUser(@RequestParam String nom,
                                              @RequestParam String prenom,
                                              @RequestParam String email,
                                              @RequestParam String password,
                                              @RequestParam int numero,
-                                             @RequestParam String adresse ,
+                                             @RequestParam String adresse,
                                              @RequestParam Grad grade,
-                                             @RequestParam ("photo") MultipartFile image) throws IOException {
+                                             @RequestParam("imagePath") MultipartFile image) throws IOException {
 
-        // Convert MultipartFile to byte[]
-        byte[] imageBytes = image.getBytes();
-
-        // Create SignupRequest object
         SignupRequest signupRequest = new SignupRequest();
         signupRequest.setNom(nom);
         signupRequest.setPrenom(prenom);
         signupRequest.setEmail(email);
         signupRequest.setPassword(password);
         signupRequest.setNumero(numero);
+        signupRequest.setAdresse(adresse);
         signupRequest.setGrade(grade);
-        signupRequest.setPhoto(imageBytes);
+     //   signupRequest.setImagePath(imageBytes);
 
-        boolean isUserCreated = authService.createUser(signupRequest);
+        boolean isUserCreated = authService.createUser(signupRequest, image);
         if (isUserCreated) {
             return ResponseEntity.status(HttpStatus.CREATED).body("{\"message\": \"User created successfully\"}");
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"message\": \"Failed to create user\"}");
         }
     }
-    }
+
+
+}
 

@@ -7,6 +7,7 @@ import java.util.List;
 public interface IChatService {
 
     public List<Chat> retrieveAllChatts();
+    public Long findChatIdByExactUserIds(List<Long> userIds);
     public Chat retrieveChat(Long idChat) ;
     public Chat addChat(Chat c) ;
     public Chat updateChat(Chat c) ;

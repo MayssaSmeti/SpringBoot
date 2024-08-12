@@ -1,6 +1,7 @@
 package com.example.projecttt.services;
 
 import com.example.projecttt.entities.Commentaire;
+import com.example.projecttt.entities.Notification;
 import com.example.projecttt.entities.Publication;
 import com.example.projecttt.entities.Utilisateur;
 import com.example.projecttt.interfacesServices.ICommentaireService;
@@ -29,9 +30,23 @@ public class CommentaireService implements ICommentaireService {
     UtilisateurRepo utilisateurRepo;
     @Autowired
     PublicationService publicationService;
+     @Autowired
+     UserService    userService;
+     @Autowired
+     NotificationServiceIml notificationServiceIml;
 @Override
     public Commentaire addComment2(int idPublication,  Commentaire commentaire) {
-        Publication publication = publicationRepo.findByIdPublication(idPublication);
+    // Récupérer l'utilisateur (vous devrez ajuster cela en fonction de votre logique d'authentification)
+    Utilisateur user = userService.retrieveUserByIdUtilisateur(commentaire.getUtilisateur().getUtilisateur_id());
+
+    // Créer et enregistrer une notification
+    Notification notification = new Notification();
+    notification.setDateNotification(new Date());
+    notification.setContenu("Nouveau commentaire ajouté : " + commentaire.getContenu());
+    notification.setUtilisateur(user); // Associer l'utilisateur à la notification
+    notificationServiceIml.AddNotif(notification);
+
+    Publication publication = publicationRepo.findByIdPublication(idPublication);
      commentaire.setPublication(publication);
     commentaire.setDateComment(new Date());
 
@@ -51,6 +66,15 @@ public class CommentaireService implements ICommentaireService {
 
     @Override
     public Commentaire addCommentaire(Commentaire commentaire) {
+        // Récupérer l'utilisateur (vous devrez ajuster cela en fonction de votre logique d'authentification)
+        Utilisateur user = userService.retrieveUserByIdUtilisateur(commentaire.getUtilisateur().getUtilisateur_id());
+
+        // Créer et enregistrer une notification
+        Notification notification = new Notification();
+        notification.setDateNotification(new Date());
+        notification.setContenu("Nouveau commentaire ajouté : " + commentaire.getContenu());
+        notification.setUtilisateur(user); // Associer l'utilisateur à la notification
+        notificationServiceIml.AddNotif(notification);
 
         commentaire.setDateComment(new Date());
         commentaireRepo.save(commentaire);

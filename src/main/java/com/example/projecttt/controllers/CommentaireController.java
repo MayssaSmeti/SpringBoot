@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
-
+@CrossOrigin("*")
 @RestController
 @Slf4j
 public class CommentaireController {
@@ -29,16 +29,18 @@ public class CommentaireController {
     private static final Logger logger = LoggerFactory.getLogger(CommentaireController.class);
 
     @PostMapping("/addComment")
-    public ResponseEntity<String> ajouterComment(@RequestBody Commentaire comment) {
+    public Boolean ajouterComment(@RequestBody Commentaire comment) {
         if (comment.getContenu() == null || comment.getContenu().trim().isEmpty()) {
             logger.info("Comment content is empty, not adding to the database.");
-            return ResponseEntity.badRequest().body("Comment content cannot be empty");
+            // ResponseEntity.badRequest().body("Comment content cannot be empty");
+            return false;
         }
 
         logger.info("Received comment: {}", comment);
         // Sauvegardez le commentaire
         service.addCommentaire(comment);
-        return ResponseEntity.ok("Comment added successfully");
+       // ResponseEntity.ok();
+        return true;
     }
 
     @PostMapping("Comment/ajouterr")

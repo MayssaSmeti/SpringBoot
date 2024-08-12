@@ -8,12 +8,17 @@ import java.util.List;
 
 @RestController()
 @RequestMapping("/chat")
-
+@CrossOrigin("*")
 public class ChatController {
     private ChatService chatService;
 
     public ChatController(ChatService chatService) {
         this.chatService = chatService;
+    }
+
+    @PostMapping("/extract")
+    public Long extractChatByList(@RequestBody List<Long> userIds) {
+        return chatService.findChatIdByExactUserIds(userIds);
     }
 
     @PostMapping("/addChat")

@@ -11,10 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-
+@CrossOrigin("*")
 @RestController()
 public class UserController {
     @Autowired
@@ -36,7 +35,7 @@ public class UserController {
         userService.AjoutUtilisateur(utilisateur);
         return (utilisateur);
     }
-    @PutMapping("/Update")
+    @PutMapping("/Userpdate")
     public  Utilisateur UpdateUtilisateur ( @RequestBody Utilisateur utilisateur)
     {
         userService.ModifierUtilisateur(utilisateur);
@@ -59,6 +58,12 @@ public class UserController {
     @GetMapping("/retrieve-user-by-mail/{email}")
     public Utilisateur retrieveUserByEmail(@PathVariable("email") String mail) {
         Utilisateur user = userService.retrieveUserByMail(mail);
+        return user;
+    }
+    // Retrieve user by id
+    @GetMapping("/retrieve-user-by-id/{utilisateur_id}")
+    public Utilisateur retrieveUserByIdUtilisateur(@PathVariable("utilisateur_id") Long utilisateur_id) {
+        Utilisateur user = userService.retrieveUserByIdUtilisateur(utilisateur_id);
         return user;
     }
 

@@ -1,8 +1,11 @@
 package com.example.projecttt.services;
 
+import com.example.projecttt.entities.Notification;
 import com.example.projecttt.entities.Publication;
+import com.example.projecttt.entities.Utilisateur;
 import com.example.projecttt.interfacesServices.IPublicationService;
 import com.example.projecttt.repositories.PublicationRepo;
+import com.example.projecttt.repositories.UtilisateurRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,10 @@ import java.util.List;
 public class PublicationService implements IPublicationService {
     @Autowired
     PublicationRepo publicationRepo;
+    @Autowired
+    NotificationServiceIml notificationServiceIml;
+    @Autowired
+    UserService userService;
 
     @Override
     public List<Publication> getAllPublications() {
@@ -22,6 +29,16 @@ public class PublicationService implements IPublicationService {
 
     @Override
     public Publication AjoutPublication(Publication publication) {
+        // Récupérer l'utilisateur (vous devrez ajuster cela en fonction de votre logique d'authentification)
+        Utilisateur user  = userService.retrieveUserByIdUtilisateur(publication.getUtilisateur().getUtilisateur_id());
+
+        // Créer et enregistrer une notification
+        // Créer et enregistrer une notification
+        Notification notification = new Notification();
+        notification.setDateNotification(new Date());
+        notification.setContenu("Nouvelle publication ajoutée : " + publication.getContenu());
+        notification.setUtilisateur(user);
+        notificationServiceIml.AddNotif(notification);
         publication.setDatePublication(new Date());
         return publicationRepo.save(publication);
     }
