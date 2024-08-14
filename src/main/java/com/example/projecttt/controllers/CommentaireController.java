@@ -55,6 +55,10 @@ public class CommentaireController {
         List<Commentaire> commentairePubs = service.retrieveAllCommentairesByPublication(idPublication);
         return commentairePubs;
     }
+    @GetMapping("/CountComm")
+    public int getUnreadComments(@RequestParam int idPublication) {
+        return service.countUnreadNotifications(idPublication);
+    }
     @GetMapping("Commentaire/{id_comment}")
     public Commentaire getComment(@PathVariable Long id_comment) {
         return service.getCommentById(Math.toIntExact(id_comment)).orElseThrow(

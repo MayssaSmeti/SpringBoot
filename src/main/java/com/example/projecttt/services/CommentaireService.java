@@ -59,6 +59,11 @@ public class CommentaireService implements ICommentaireService {
     }
 
     @Override
+    public int countUnreadNotifications(int  idPublication) {
+        return commentaireRepo.countByUserReceiver(idPublication);
+    }
+
+    @Override
     public List<Commentaire> getCommentaire() {
         return commentaireRepo.findAll();
     }
